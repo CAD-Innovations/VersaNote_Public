@@ -1,0 +1,33 @@
+on: 
+  push:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+  
+    steps:
+    
+    - name: Publish to Wordpress
+      run: sshpass -p ${{ secrets.SSH_PASSPHRASE }} scp -o StrictHostKeyChecking=no ./VersaNote-v1.10.0.msi ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/html/wp-content/uploads/VersaNote.msi
+
+  #     - name: Create_WordPress_Beta_Folder
+  #       uses: appleboy/ssh-action@v1.0.0
+            
+  #       with:
+  #         host: ${{ secrets.SSH_HOST }}
+  #         username: ${{ secrets.SSH_USERNAME }}
+  #         password: ${{ secrets.SSH_PASSPHRASE }}
+  #         port: 22
+  #         script: mkdir -Path /var/www/html/wp-content/uploads/beta/v${{ env.VersionNumber }};
+
+      # - name: copy file via ssh password
+      #   uses: appleboy/scp-action@v0.1.4
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PASSPHRASE }}
+      #     port: 22
+      #     #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
+      #     #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
+      #     source: VersaNote-v${{ env.VersionNumber }}.msi
+      #     target: /var/www/html/wp-content/uploads/VersaNote.msi
