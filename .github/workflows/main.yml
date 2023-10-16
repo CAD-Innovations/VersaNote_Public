@@ -16,7 +16,7 @@ jobs:
         remote: /var/www/html/wp-content/uploads/VersaNote.msi
         port: 22
         user: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PASSPHRASE }}
+        key: ${{ secrets.SSH_KEY }}
     
 #    - name: Publish to Wordpress
 #      run: sshpass -p ${{ secrets.SSH_PASSPHRASE }} scp -o StrictHostKeyChecking=no ./VersaNote-v1.10.0.msi ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/html/wp-content/uploads/VersaNote.msi
