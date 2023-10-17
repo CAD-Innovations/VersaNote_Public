@@ -17,7 +17,7 @@ jobs:
         with:
          host: ${{ secrets.SSH_HOST }}
          username: ${{ secrets.SSH_USERNAME }}
-         password: ${{ secretes.SSH_PASSPHRASE }}
+         password: ${{ secrets.SSH_PASSPHRASE }}
          port: 22
          #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
          #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
