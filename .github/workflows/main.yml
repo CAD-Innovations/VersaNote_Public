@@ -13,7 +13,7 @@ jobs:
         with:
           src: ./VersaNote-v1.10.0.msi
           host: ${{ secrets.SSH_HOST }}
-          remote: /var/www/html/wp-content/uploads/VersaNote.msi
+          remote: ~/var/www/html/wp-content/uploads/VersaNote.msi
           port: 22
           user: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
