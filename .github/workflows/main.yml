@@ -7,16 +7,18 @@ jobs:
   
     steps:
 
-      - name: SCP deploy action
-        uses: nogsantos/ssh-scp-deploy@v1.3.0
-     
-        with:
-          src: ./VersaNote-v1.10.0.msi
-          host: ${{ secrets.SSH_HOST }}
-          remote: ~/var/www/html/wp-content/uploads/VersaNote.msi
-          port: 22
-          user: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+     - name: copy file via ssh password
+       uses: appleboy/scp-action@v0.1.4
+       
+       with:
+         host: ${{ secrets.SSH_HOST }}
+         username: ${{ secrets.SSH_USERNAME }}
+         key: ${{ secrets.SSH_KEY }}
+         port: 22
+         #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
+         #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
+         source: ./VersaNote-v1.10.0.msi
+         target: /var/www/html/wp-content/uploads/latest/VersaNote.msi
 
 #     - name: copy file via ssh password
 #       uses: appleboy/scp-action@v0.1.4
@@ -25,9 +27,9 @@ jobs:
 #        host: ${{ secrets.SSH_HOST }}
 #        username: ${{ secrets.SSH_USERNAME }}
 #        password: ${{ secrets.SSH_PASSPHRASE }}
-#       port: 22
-#       source: "VersaNote-v1.10.0.msi"
-#       target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
+#        port: 22
+#        source: "VersaNote-v1.10.0.msi"
+#        target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
 
 
 
@@ -59,14 +61,4 @@ jobs:
 #         port: 22
 #         script: mkdir -Path /var/www/html/wp-content/uploads/beta/v${{ env.VersionNumber }};
  
-# - name: copy file via ssh password
-#   uses: appleboy/scp-action@v0.1.4
-#   with:
-#     host: ${{ secrets.SSH_HOST }}
-#     username: ${{ secrets.SSH_USERNAME }}
-#     key: ${{ secrets.SSH_PASSPHRASE }}
-#     port: 22
-#     #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
-#     #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
-#     source: VersaNote-v${{ env.VersionNumber }}.msi
-#     target: /var/www/html/wp-content/uploads/VersaNote.msi
+
