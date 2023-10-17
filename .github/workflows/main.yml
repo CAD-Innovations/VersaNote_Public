@@ -6,14 +6,15 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-
-     - name: List the tree structure before upload
-       run: ls -R
-
-     - name: copy file via ssh password
-       uses: appleboy/scp-action@v0.1.4
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      
+      - name: List the tree structure before upload
+        run: ls -R
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.4
        
-       with:
+        with:
          host: ${{ secrets.SSH_HOST }}
          username: ${{ secrets.SSH_USERNAME }}
          key: ${{ secrets.SSH_KEY }}
