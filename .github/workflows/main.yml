@@ -15,7 +15,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSPHRASE }}
         port: 22
-        source: "./VersaNote-v1.10.0.msi"
+        source: "VersaNote-v1.10.0.msi"
         target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
 
 #      - name: SCP deploy action
