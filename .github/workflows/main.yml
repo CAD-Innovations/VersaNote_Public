@@ -7,27 +7,29 @@ jobs:
   
     steps:
 
-     - name: copy file via ssh password
-       uses: appleboy/scp-action@v0.1.4
-
-       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSPHRASE }}
-        port: 22
-        source: "VersaNote-v1.10.0.msi"
-        target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
-
-#      - name: SCP deploy action
-#        uses: nogsantos/ssh-scp-deploy@v1.3.0
+      - name: SCP deploy action
+        uses: nogsantos/ssh-scp-deploy@v1.3.0
      
-#        with:
-#          src: ./VersaNote-v1.10.0.msi
-#          host: ${{ secrets.SSH_HOST }}
-#          remote: ~/var/www/html/wp-content/uploads/VersaNote.msi
-#          port: 22
-#          user: ${{ secrets.SSH_USERNAME }}
-#          key: ${{ secrets.SSH_KEY }}
+        with:
+          src: ./VersaNote-v1.10.0.msi
+          host: ${{ secrets.SSH_HOST }}
+          remote: ~/var/www/html/wp-content/uploads/VersaNote.msi
+          port: 22
+          user: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+
+#     - name: copy file via ssh password
+#       uses: appleboy/scp-action@v0.1.4
+
+#       with:
+#        host: ${{ secrets.SSH_HOST }}
+#        username: ${{ secrets.SSH_USERNAME }}
+#        password: ${{ secrets.SSH_PASSPHRASE }}
+#       port: 22
+#       source: "VersaNote-v1.10.0.msi"
+#       target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
+
+
 
 #      - name: ssh-scp-deploy
 #        uses: marcodallasanta/ssh-scp-deploy@v1.2.0
