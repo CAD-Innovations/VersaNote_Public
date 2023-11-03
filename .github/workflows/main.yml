@@ -27,3 +27,10 @@ jobs:
       # Remove the .pfx
       - name: Remove the .pfx
         run: Remove-Item -path GitHubActionsWorkflow.pfx
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: msi-installer-file-v${{ env.VersionNumber }}
+          path: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
+          retention-days: 5
