@@ -11,10 +11,7 @@ jobs:
 
       - name: Setup VS Dev Environment
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
-      
-      - name: List the tree structure before upload
-        run: ls -R
-       
+             
     # Decode the base 64 encoded pfx and save the Signing_Certificate
       - name: Decode the pfx
         run: |
@@ -28,9 +25,11 @@ jobs:
       - name: Remove the .pfx
         run: Remove-Item -path GitHubActionsWorkflow.pfx
 
+      - name: List the tree structure before upload
+        run: ls -R
+
       - name: Upload installer
         uses: actions/upload-artifact@v3
         with:
-          name: msi-installer-file-v${{ env.VersionNumber }}
-          path: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
+          name: VersaNote-v1.10.0.msi
           retention-days: 5
