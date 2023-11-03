@@ -12,58 +12,15 @@ jobs:
       - name: List the tree structure before upload
         run: ls -R
        
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
-      
-        with:
-         host: ${{ secrets.SSH_HOST }}
-         username: ${{ secrets.SSH_USERNAME }}
-         password: ${{ secrets.SSH_PASSPHRASE }}
-         port: 22
-         #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
-         #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
-         source: VersaNote-v1.10.0.msi
-         target: /var/www/html/wp-content/uploads/latest/VersaNote.msi
-
-#     - name: copy file via ssh password
-#       uses: appleboy/scp-action@v0.1.4
-
-#       with:
-#        host: ${{ secrets.SSH_HOST }}
-#        username: ${{ secrets.SSH_USERNAME }}
-#        password: ${{ secrets.SSH_PASSPHRASE }}
-#        port: 22
-#        source: "VersaNote-v1.10.0.msi"
-#        target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
-
-
-
-#      - name: ssh-scp-deploy
-#        uses: marcodallasanta/ssh-scp-deploy@v1.2.0
-        
-#        with:
-#          local: './VersaNote-v1.10.0.msi'                                                # Local file path - REQUIRED false - DEFAULT ./
-#          remote: '~/var/www/html/wp-content/uploads/VersaNote.msi'                                                 # Remote file path - REQUIRED false - DEFAULT ~/
-#          host: ${{secrets.SSH_HOST}}                                      # Remote server address - REQUIRED true
-#          port: 22                                      # Remote server port - REQUIRED false - DEFAULT 22
-#          user: ${{secrets.SSH_USERNAME}}                                      # Remote server user - REQUIRED true
-#          password: ${{secrets.SSH_PASSPHRASE}}                              # User password - REQUIRED at least one of "password" or "key" 
-#          ssh_options: -o StrictHostKeyChecking=no                     # A set of ssh_option separated by -o - REQUIRED false - DEFAULT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-            
-
-
-    
-#    - name: Publish to Wordpress
-#      run: sshpass -p ${{ secrets.SSH_PASSPHRASE }} scp -o StrictHostKeyChecking=no ./VersaNote-v1.10.0.msi ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/html/wp-content/uploads/VersaNote.msi
-
-#     - name: Create_WordPress_Beta_Folder
-#       uses: appleboy/ssh-action@v1.0.0
-      
-#       with:
-#         host: ${{ secrets.SSH_HOST }}
-#         username: ${{ secrets.SSH_USERNAME }}
-#         password: ${{ secrets.SSH_PASSPHRASE }}
-#         port: 22
-#         script: mkdir -Path /var/www/html/wp-content/uploads/beta/v${{ env.VersionNumber }};
+    # Decode the base 64 encoded pfx and save the Signing_Certificate
+      - name: Decode the pfx
+        run: |
+          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_CERTIFICATE }}")
+          [IO.File]::WriteAllBytes("GitHubActionsWorkflow.pfx", $pfx_cert_byte)
  
+      - name: sign the MSI
+        run: signtool.exe sign /f GitHubActionsWorkflow.pfx /p "${{ secrets.PFX_CERTIFICATE }}" /fd SHA256 /td SHA256 /tr http://timestamp.url.com VersaNote-v1.10.0.msi
 
+      # Remove the .pfx
+      - name: Remove the .pfx
+        run: Remove-Item -path GitHubActionsWorkflow.pfx
