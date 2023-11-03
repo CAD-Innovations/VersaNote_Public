@@ -32,4 +32,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: VersaNote-v1.10.0.msi
+          path: Versa_Note\Versa_Note
           retention-days: 5
