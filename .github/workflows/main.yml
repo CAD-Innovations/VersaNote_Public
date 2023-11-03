@@ -9,14 +9,8 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.3
-
       - name: Setup VS Dev Environment
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
-
-      - name: Setup dotnet-guid
-        run: dotnet tool install -g dotnet-guid
       
       - name: List the tree structure before upload
         run: ls -R
