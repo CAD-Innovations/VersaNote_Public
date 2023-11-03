@@ -3,7 +3,7 @@ on:
 
 jobs:
   upload:
-    runs-on: ubuntu-latest
+    runs-on: windows-2022
   
     steps:
       - name: Checkout the repository
@@ -19,7 +19,7 @@ jobs:
           [IO.File]::WriteAllBytes("GitHubActionsWorkflow.pfx", $pfx_cert_byte)
  
       - name: sign the MSI
-        run: signtool.exe sign /f GitHubActionsWorkflow.pfx /p "${{ secrets.PFX_CERTIFICATE }}" /fd SHA256 /td SHA256 /tr http://timestamp.url.com VersaNote-v1.10.0.msi
+        run: signtool.exe sign /f GitHubActionsWorkflow.pfx /p "${{ secrets.PFX_PASSWORD }}" /fd SHA256 /td SHA256 /tr http://timestamp.url.com VersaNote-v1.10.0.msi
 
       # Remove the .pfx
       - name: Remove the .pfx
