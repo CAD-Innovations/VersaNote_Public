@@ -1,69 +1,50 @@
-on: 
+on:
   push:
+    branches: [ACS_Test]
 
 jobs:
-  upload:
-    runs-on: ubuntu-latest
-  
+  sign:
+    runs-on: windows-latest
+    name: Build app and sign files with Trusted Signing
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v3
-      
-      - name: List the tree structure before upload
-        run: ls -R
-       
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
-      
+
+      - name: Sign files with Trusted Signing
+        uses: azure/trusted-signing-action@v0.3.15
         with:
-         host: ${{ secrets.SSH_HOST }}
-         username: ${{ secrets.SSH_USERNAME }}
-         password: ${{ secrets.SSH_PASSPHRASE }}
-         port: 22
-         #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
-         #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
-         source: VersaNote-v1.10.0.msi
-         target: /var/www/html/wp-content/uploads/latest/VersaNote.msi
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://eus.codesigning.azure.net/
+          code-signing-account-name: CADInnovations
+          certificate-profile-name: CADInnovations
+          files-folder: ${{ github.workspace }}
+          files-folder-filter: msi
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
 
-#     - name: copy file via ssh password
-#       uses: appleboy/scp-action@v0.1.4
+  pre-release:
 
-#       with:
-#        host: ${{ secrets.SSH_HOST }}
-#        username: ${{ secrets.SSH_USERNAME }}
-#        password: ${{ secrets.SSH_PASSPHRASE }}
-#        port: 22
-#        source: "VersaNote-v1.10.0.msi"
-#        target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
+    needs: sign
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
+    steps:
 
-
-#      - name: ssh-scp-deploy
-#        uses: marcodallasanta/ssh-scp-deploy@v1.2.0
-        
-#        with:
-#          local: './VersaNote-v1.10.0.msi'                                                # Local file path - REQUIRED false - DEFAULT ./
-#          remote: '~/var/www/html/wp-content/uploads/VersaNote.msi'                                                 # Remote file path - REQUIRED false - DEFAULT ~/
-#          host: ${{secrets.SSH_HOST}}                                      # Remote server address - REQUIRED true
-#          port: 22                                      # Remote server port - REQUIRED false - DEFAULT 22
-#          user: ${{secrets.SSH_USERNAME}}                                      # Remote server user - REQUIRED true
-#          password: ${{secrets.SSH_PASSPHRASE}}                              # User password - REQUIRED at least one of "password" or "key" 
-#          ssh_options: -o StrictHostKeyChecking=no                     # A set of ssh_option separated by -o - REQUIRED false - DEFAULT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-            
-
-
-    
-#    - name: Publish to Wordpress
-#      run: sshpass -p ${{ secrets.SSH_PASSPHRASE }} scp -o StrictHostKeyChecking=no ./VersaNote-v1.10.0.msi ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/html/wp-content/uploads/VersaNote.msi
-
-#     - name: Create_WordPress_Beta_Folder
-#       uses: appleboy/ssh-action@v1.0.0
+      - name: Download the artifacts folder
+        uses: actions/download-artifact@v3
+        with:
+          name: msi-installer-file-v${{ env.VersionNumber }}
       
-#       with:
-#         host: ${{ secrets.SSH_HOST }}
-#         username: ${{ secrets.SSH_USERNAME }}
-#         password: ${{ secrets.SSH_PASSPHRASE }}
-#         port: 22
-#         script: mkdir -Path /var/www/html/wp-content/uploads/beta/v${{ env.VersionNumber }};
- 
-
+      - name: Release the version
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GIT_API_TOKEN }}"
+          automatic_release_tag: "v${{ env.VersionNumber }}"
+          title: "Beta v${{ env.VersionNumber }}"
+          prerelease: true
+          files: |
+            *.msi
