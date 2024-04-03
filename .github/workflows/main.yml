@@ -4,7 +4,7 @@ on:
 
 jobs:
   sign:
-    runs-on: windows-latest
+    runs-on: windows-2022
     name: Build app and sign files with Trusted Signing
     steps:
       - name: Checkout
