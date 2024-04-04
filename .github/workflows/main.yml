@@ -5,20 +5,20 @@ on:
 jobs:
   sign:
     runs-on: windows-2022
-    name: Build app and sign files with Trusted Signing
+    name: Sign install files with Trusted Signing
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Sign files with Trusted Signing
-        uses: azure/trusted-signing-action@v0.3.15
+        uses: azure/trusted-signing-action@v0.3.0
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           endpoint: https://eus.codesigning.azure.net/
           code-signing-account-name: CADInnovations
-          certificate-profile-name: CADInnovations
+          certificate-profile-name: CADInnovations-Profile
           files-folder: ${{ github.workspace }}
           files-folder-filter: msi
           file-digest: SHA256
