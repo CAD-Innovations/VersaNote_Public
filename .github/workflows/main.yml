@@ -4,14 +4,11 @@ on:
 
 jobs:
   sign:
-    runs-on: windows-2022
+    runs-on: windows-2019
     name: Sign install files with Trusted Signing
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: List available registered module repositories
-        run: Get-PSRepository
 
       - name: Sign files with Trusted Signing
         uses: azure/trusted-signing-action@v0.3.15
