@@ -10,8 +10,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: List available registered module repositories
+        run: Get-PSRepository
+
       - name: Sign files with Trusted Signing
-        uses: azure/trusted-signing-action@v0.3.0
+        uses: azure/trusted-signing-action@v0.3.15
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
