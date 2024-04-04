@@ -4,7 +4,7 @@ on:
 
 jobs:
   sign:
-    runs-on: windows-2019
+    runs-on: windows-2022
     name: Sign install files with Trusted Signing
     steps:
       - name: Checkout
