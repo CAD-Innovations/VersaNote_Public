@@ -26,11 +26,20 @@ jobs:
           endpoint: https://eus.codesigning.azure.net/
           code-signing-account-name: CADInnovations
           certificate-profile-name: CADInnovations-Profile
-          files-folder: ${{ github.workspace }}
-          files-folder-filter: msi
+          files-catalog: ${{ github.workspace }}\catalog.txt
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
+
+      - name: Rename the signed Installer
+        run: Rename-Item -Path "VersaNote-v1.16.1.msi" -NewName "VersaNote-v${{ env.VersionNumber }}.msi"
+
+      - name: Upload signed installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: msi-installer-file-v${{ env.VersionNumber }}
+          path: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
+          retention-days: 5
           
   pre-release:
 
