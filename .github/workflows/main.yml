@@ -18,9 +18,11 @@ jobs:
       - name: Sign files with Trusted Signing
         uses: azure/trusted-signing-action@v0.3.16
         with:
-          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          #azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          #azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          #azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          azure-username: ${{ secrets.AZURE_USERNAME }}
+          azure-password: ${{ secrets.AZURE_PASSWORD }}
           endpoint: https://eus.codesigning.azure.net/
           code-signing-account-name: CADInnovations
           certificate-profile-name: CADInnovations-Profile
