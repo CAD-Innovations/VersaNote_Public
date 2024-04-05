@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: msi-installer-file-v${{ env.VersionNumber }}
-          path: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
+          path: VersaNote-v${{ env.VersionNumber }}.msi
           retention-days: 5
           
   pre-release:
