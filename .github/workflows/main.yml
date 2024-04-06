@@ -6,25 +6,9 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
+      - name: Download File
+        run: curl https://cadinnovations.ca/wp-content/uploads/v1.16.2/VersaNote.msi -o VersaNote.msi
       
-      - name: List the tree structure before upload
-        run: ls -R
-       
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
-      
-        with:
-         host: ${{ secrets.SSH_HOST }}
-         username: ${{ secrets.SSH_USERNAME }}
-         password: ${{ secrets.SSH_PASSPHRASE }}
-         port: 22
-         #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
-         #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
-         source: VersaNote-v1.10.0.msi
-         target: /var/www/html/wp-content/uploads/latest/VersaNote.msi
-
 #     - name: copy file via ssh password
 #       uses: appleboy/scp-action@v0.1.4
 
