@@ -27,9 +27,9 @@ jobs:
           code-signing-account-name: CADInnovations
           certificate-profile-name: CADInnovations-Profile
           files-catalog: ${{ github.workspace }}\catalog.txt
-          file-digest: SHA256
+          file-digest: SHA384
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
-          timestamp-digest: SHA256
+          timestamp-digest: SHA384
 
       - name: Rename the signed Installer
         run: Rename-Item -Path "VersaNote-v1.16.1.msi" -NewName "VersaNote-v${{ env.VersionNumber }}.msi"
