@@ -2,68 +2,31 @@ on:
   push:
 
 jobs:
-  upload:
+
+  release:
+
     runs-on: ubuntu-latest
-  
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-      
-      - name: List the tree structure before upload
-        run: ls -R
-       
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
-      
-        with:
-         host: ${{ secrets.SSH_HOST }}
-         username: ${{ secrets.SSH_USERNAME }}
-         password: ${{ secrets.SSH_PASSPHRASE }}
-         port: 22
-         #source: DwgNotesInstall_DLLs\Release\VersaNote-v${{ env.VersionNumber }}.msi
-         #target: /var/www/html/wp-content/uploads/"v${{ vars.StableVersion }}"/VersaNote.msi
-         source: VersaNote-v1.10.0.msi
-         target: /var/www/html/wp-content/uploads/latest/VersaNote.msi
-
-#     - name: copy file via ssh password
-#       uses: appleboy/scp-action@v0.1.4
-
-#       with:
-#        host: ${{ secrets.SSH_HOST }}
-#        username: ${{ secrets.SSH_USERNAME }}
-#        password: ${{ secrets.SSH_PASSPHRASE }}
-#        port: 22
-#        source: "VersaNote-v1.10.0.msi"
-#        target: "~/var/www/html/wp-content/uploads/latest/VersaNote.msi"
-
-
-
-#      - name: ssh-scp-deploy
-#        uses: marcodallasanta/ssh-scp-deploy@v1.2.0
-        
-#        with:
-#          local: './VersaNote-v1.10.0.msi'                                                # Local file path - REQUIRED false - DEFAULT ./
-#          remote: '~/var/www/html/wp-content/uploads/VersaNote.msi'                                                 # Remote file path - REQUIRED false - DEFAULT ~/
-#          host: ${{secrets.SSH_HOST}}                                      # Remote server address - REQUIRED true
-#          port: 22                                      # Remote server port - REQUIRED false - DEFAULT 22
-#          user: ${{secrets.SSH_USERNAME}}                                      # Remote server user - REQUIRED true
-#          password: ${{secrets.SSH_PASSPHRASE}}                              # User password - REQUIRED at least one of "password" or "key" 
-#          ssh_options: -o StrictHostKeyChecking=no                     # A set of ssh_option separated by -o - REQUIRED false - DEFAULT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-            
-
-
+    timeout-minutes: 5
+    permissions:
+      contents: write
     
-#    - name: Publish to Wordpress
-#      run: sshpass -p ${{ secrets.SSH_PASSPHRASE }} scp -o StrictHostKeyChecking=no ./VersaNote-v1.10.0.msi ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/html/wp-content/uploads/VersaNote.msi
+    steps:
 
-#     - name: Create_WordPress_Beta_Folder
-#       uses: appleboy/ssh-action@v1.0.0
-      
-#       with:
-#         host: ${{ secrets.SSH_HOST }}
-#         username: ${{ secrets.SSH_USERNAME }}
-#         password: ${{ secrets.SSH_PASSPHRASE }}
-#         port: 22
-#         script: mkdir -Path /var/www/html/wp-content/uploads/beta/v${{ env.VersionNumber }};
- 
+      - name: Download the release notes file
+        run: curl -o existing_VersaNote-Beta_Release_Notes.txt https://cadinnovations.ca/${{ vars.BETA_RELEASE_NOTES_URL }}
 
+      - name: Create file for new release notes
+        run: echo -e "Beta v${{ env.VersionNumber }}\n" > new_VersaNote-Beta_Release_Notes.txt
+
+      - name: Merge release notes
+        run: cat new_VersaNote-Beta_Release_Notes.txt existing_VersaNote-Beta_Release_Notes.txt > VersaNote-Beta_Release_Notes.txt
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Append text
+        run: echo -e "Beta v${{ env.VersionNumber }}\n${{ steps.date.outputs.date }}" | cat - copy_VersaNote-Beta_Release_Notes.txt > VersaNote-Beta_Release_Notes.txt
+
+      - name: list file contents
+        run: cat VersaNote-Beta_Release_Notes.txt
