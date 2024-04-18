@@ -17,7 +17,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
         
       - name: Download the release notes file
-        run: curl -o existing_VersaNote-Beta_Release_Notes.txt https://cadinnovations.ca/${{ vars.BETA_RELEASE_NOTES_URL }}
+        run: curl -o existing_VersaNote-Beta_Release_Notes.txt https://cadinnovations.ca/wp-content/uploads/latest-beta/VersaNote-Beta_Release_Notes.txt
 
       - name: Create file for new release notes
         run: echo -e "Beta v${{ env.VersionNumber }}\n${{ steps.date.outputs.date }}\n\n${{ github.event.workflow_run.head_commit.message }}" > new_VersaNote-Beta_Release_Notes.txt
