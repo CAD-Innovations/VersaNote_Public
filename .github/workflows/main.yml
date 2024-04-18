@@ -9,6 +9,9 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: write
+
+    env:
+      VersionNumber: ${{ vars.BetaVersion }}.${{ github.run_number }}${{ github.run_attempt }}
     
     steps:
 
@@ -20,7 +23,7 @@ jobs:
         run: curl -o existing_VersaNote-Beta_Release_Notes.txt https://cadinnovations.ca/wp-content/uploads/latest-beta/VersaNote-Beta_Release_Notes.txt
 
       - name: Create file for new release notes
-        run: echo -e "Beta v${{ env.VersionNumber }}\n${{ steps.date.outputs.date }}\n\n${{ github.event.workflow_run.head_commit.message }}" > new_VersaNote-Beta_Release_Notes.txt
+        run: echo -e "Beta v${{ env.VersionNumber }}\n${{ steps.date.outputs.date }}\n\n${{ github.workflow_run.head_commit.message }}" > new_VersaNote-Beta_Release_Notes.txt
 
       - name: Merge release notes
         run: cat new_VersaNote-Beta_Release_Notes.txt existing_VersaNote-Beta_Release_Notes.txt > VersaNote-Beta_Release_Notes.txt
