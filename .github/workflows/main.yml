@@ -20,4 +20,4 @@ jobs:
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
 
       - name: DisableOutOfProcBuild 
-        run: $"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild\DisableOutOfProcBuild.exe"
+        run: $".\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild\DisableOutOfProcBuild.exe"
