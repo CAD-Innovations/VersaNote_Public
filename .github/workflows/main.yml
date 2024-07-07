@@ -24,5 +24,4 @@ jobs:
 
       - name: list directory structure
         run: |
-          c: && cd \ && dir /s
-
+          c: && cd \ && dir
