@@ -23,5 +23,6 @@ jobs:
       #  run: $"C:\Program Files \Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild\DisableOutOfProcBuild.exe"
 
       - name: list directory structure
-        run: dir /c/
+        run: |
+          c: && cd \ && dir /s
 
