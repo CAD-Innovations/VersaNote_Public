@@ -19,7 +19,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
 
       - name: Update AppxPackage.Targets
-        run: (Get-Content "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Msbuild\Microsoft\VisualStudio\v17.0\AppxPackage\Microsoft.AppxPackage.Targets") -Replace ')_Test\', ')\' | Set-Content "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Msbuild\Microsoft\VisualStudio\v17.0\AppxPackage\Microsoft.AppxPackage.Targets"
+        run: (Get-Content "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Msbuild\Microsoft\VisualStudio\v17.0\AppxPackage\Microsoft.AppxPackage.Targets").Replace(')_Test\', ')\') | Set-Content "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Msbuild\Microsoft\VisualStudio\v17.0\AppxPackage\Microsoft.AppxPackage.Targets"
 
       - name: Print AppxPackage.Targets
         run: more "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Msbuild\Microsoft\VisualStudio\v17.0\AppxPackage\Microsoft.AppxPackage.Targets"
